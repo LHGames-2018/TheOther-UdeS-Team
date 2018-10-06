@@ -64,15 +64,6 @@ namespace LHGames.Helper
             return Tiles[x - XMin, y - YMin];
         }
 
-        internal Tile GetTile(int x, int y)
-        {
-            if (x < XMin || x > XMax || y < YMin || y > YMax)
-            {
-                return null;
-            }
-            return Tiles[x - XMin, y - YMin];
-        }
-
         /// <summary>
         /// Returns an IEnumerable of all tiles that are visible to your bot.
         /// </summary>

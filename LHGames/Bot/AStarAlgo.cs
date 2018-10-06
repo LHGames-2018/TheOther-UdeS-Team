@@ -166,11 +166,48 @@ namespace LHGames.Bot
         {
             List<Tile> neighbors = new List<Tile>();
 
-            var rightTile = GetTileByPosition((current.Position.X + 1 + MapSizeX) % MapSizeX, current.Position.Y);
-            //if (current.Position.X != map.XMax)
-            var leftTile = GetTileByPosition((current.Position.X - 1 + MapSizeX) % MapSizeX, current.Position.Y);
-            var upTile = GetTileByPosition(current.Position.X, (current.Position.Y - 1 + MapSizeY) % MapSizeY);
-            var downTile = GetTileByPosition(current.Position.X, (current.Position.Y + 1 + MapSizeY) % MapSizeY);
+            //var rightTile = GetTileByPosition((current.Position.X + 1 + MapSizeX) % MapSizeX, current.Position.Y);
+            Tile rightTile = null;
+            if (current.Position.X == map.XMax)
+            {
+                rightTile = GetTileByPosition(map.XMin, current.Position.Y);
+            }
+            else
+            {
+                rightTile = GetTileByPosition(current.Position.X + 1, current.Position.Y);
+            }
+
+            Tile leftTile = null;
+            if (current.Position.X == map.XMin)
+            {
+                rightTile = GetTileByPosition(map.XMax, current.Position.Y);
+            }
+            else
+            {
+                rightTile = GetTileByPosition(current.Position.X - 1, current.Position.Y);
+            }
+
+            //var upTile = GetTileByPosition(current.Position.X, (current.Position.Y - 1 + MapSizeY) % MapSizeY);
+
+            Tile upTile = null;
+            if (current.Position.Y == map.YMin)
+            {
+                rightTile = GetTileByPosition(current.Position.X, map.YMax);
+            }
+            else
+            {
+                rightTile = GetTileByPosition(current.Position.X, current.Position.Y - 1);
+            }
+            //var downTile = GetTileByPosition(current.Position.X, (current.Position.Y + 1 + MapSizeY) % MapSizeY);
+            Tile downTile = null;
+            if (current.Position.Y == map.YMax)
+            {
+                rightTile = GetTileByPosition(current.Position.Y, map.YMin);
+            }
+            else
+            {
+                rightTile = GetTileByPosition(current.Position.X, current.Position.Y + 1);
+            }
 
             if (IsTileWalkable(rightTile.TileType))
             {
