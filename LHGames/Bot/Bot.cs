@@ -59,6 +59,38 @@ namespace LHGames.Bot
             {
                 var best_ressource = ressourcePlaner.GetBestRessourcePath();
                 //var best_place_for_shop = placePlaner.GetBestPlacePath(TileContent.Shop);
+                //	10000	15000	25000	50000	100000
+                if (PlayerInfo.Position == PlayerInfo.HouseLocation)
+                {
+                    bool upgrade = false;
+                    switch (PlayerInfo.GetUpgradeLevel(UpgradeType.AttackPower))
+                    {
+                        case 0:
+                            if (PlayerInfo.TotalResources >= 10000)
+                                upgrade = true;
+                            break;
+                        case 1:
+                            if (PlayerInfo.TotalResources >= 15000)
+                                upgrade = true;
+                            break;
+                        case 2:
+                            if (PlayerInfo.TotalResources >= 25000)
+                                upgrade = true;
+                            break;
+                        case 3:
+                            if (PlayerInfo.TotalResources >= 50000)
+                                upgrade = true;
+                            break;
+                        case 4:
+                            if (PlayerInfo.TotalResources >= 100000)
+                                upgrade = true;
+                            break;
+                    }
+                    if (upgrade)
+                    {
+                        return AIHelper.CreateUpgradeAction(UpgradeType.AttackPower);
+                    }
+                }
 
                 if (PlayerInfo.CarriedResources < PlayerInfo.CarryingCapacity && best_ressource != null)
                 {
@@ -147,4 +179,3 @@ class TestClass
 {
     public string Test { get; set; }
 }
- 
