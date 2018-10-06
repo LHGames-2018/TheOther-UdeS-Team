@@ -49,7 +49,7 @@ namespace LHGames.Bot
             WorldMap.WriteMap(worldMap);
             this.astarService = new AStarAlgo(worldMap);
             this.ressourcePlaner = new RessourcePlaner(worldMap, PlayerInfo, astarService);
-            this.navigationHelper = new NavigationHelper(PlayerInfo);
+            this.navigationHelper = new NavigationHelper(PlayerInfo, astarService);
             this.manathan = new Manathan();
             this.placePlaner = new PlacePlaner(map, PlayerInfo, astarService);
 
@@ -65,13 +65,15 @@ namespace LHGames.Bot
                     if (best_ressource.Path.Count == 2)
                     {
                         // On est adjacent à la meilleure ressource
-                        var direction = GetDirectionToTile(best_ressource.Tile);
+                        var direction = astarService.DirectionToward(PlayerInfo.Position, best_ressource.Tile.Position);
                         return AIHelper.CreateCollectAction(direction);
                     }
                     else if (best_ressource.Path.Count == 1)
                     {
                         // on est dessus
-                        return AIHelper.CreateMoveAction(new Point(-1, 0));
+                        var tileToGo = map.GetTile(PlayerInfo.Position.X - 1, PlayerInfo.Position.Y);
+                        var action = navigationHelper.NavigateToNextPosition(tileToGo);
+                        return action;
                     }
                     else
                     {
@@ -124,15 +126,6 @@ namespace LHGames.Bot
         /// </summary>
         internal void AfterTurn()
         {
-        }
-
-        public Point GetDirectionToTile(Tile tile)
-        {
-            var x_diff = tile.Position.X - PlayerInfo.Position.X;
-            var y_diff = tile.Position.Y - PlayerInfo.Position.Y;
-
-            // TODO maybe make sure this is 1 or -1 every time and no diagonal
-            return new Point(x_diff, y_diff);
         }
     }
 }

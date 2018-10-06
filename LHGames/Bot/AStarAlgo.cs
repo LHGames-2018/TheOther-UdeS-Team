@@ -236,7 +236,7 @@ namespace LHGames.Bot
         public bool IsTileWalkable(TileContent tileContent)
         {
             // TODO handle lava
-            return tileContent == TileContent.Empty || tileContent == TileContent.House || (map.WallsAreBreakable && tileContent == TileContent.Wall);
+            return tileContent == TileContent.Empty || (map.WallsAreBreakable && tileContent == TileContent.Wall);
         }
     }
 }
