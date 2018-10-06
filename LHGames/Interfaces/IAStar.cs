@@ -12,5 +12,8 @@ namespace LHGames.Interfaces
 
         List<Tile> Run(Point start, Point end);
         List<Tile> Run(Tile start, Tile end);
+
+
+        Point DirectionToward(Point start, Point end);
     }
 }
