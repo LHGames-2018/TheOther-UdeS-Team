@@ -17,9 +17,28 @@ namespace LHGames.Bot
 
         public IPlayer player;
 
-        public int HowManyDamageToEnemy()
+        public int HowManyDamageToEnemy(IPlayer ennemy)
         {
-            throw new NotImplementedException();
+            //Attack function : Floor(3 + attacker's power + offensive items - 2 * (defender's defence + defensive items)^0.6 )
+            bool hasSword = player.CarriedItems.Any(x => x == PurchasableItem.Sword);
+            bool ennemyHasShield = ennemy.CarriedItems.Any(x => x == PurchasableItem.Shield);
+
+            int swordValue = hasSword ? 2 : 0;
+            int shieldValue = ennemyHasShield ? 2 : 0;
+
+            return (int) Math.Floor(3 + player.AttackPower + swordValue - (2 * Math.Pow(ennemy.Defence + shieldValue, 0.6)));
+        }
+
+        public int HowManyDamageFromEnemy(IPlayer ennemy)
+        {
+            //Attack function : Floor(3 + attacker's power + offensive items - 2 * (defender's defence + defensive items)^0.6 )
+            bool ennemyHasSword = ennemy.CarriedItems.Any(x => x == PurchasableItem.Sword);
+            bool hasShield = player.CarriedItems.Any(x => x == PurchasableItem.Shield);
+
+            int swordValue = ennemyHasSword ? 2 : 0;
+            int shieldValue = hasShield ? 2 : 0;
+
+            return (int)Math.Floor(3 + ennemy.AttackPower + swordValue - (2 * Math.Pow(player.Defence + shieldValue, 0.6)));
         }
 
         public int HowManyDamageToTrees()
@@ -29,9 +48,10 @@ namespace LHGames.Bot
             return 3 + player.AttackPower + swordValue;
         }
 
-        public int HowManyTurnsToKillEnemy(IPlayer player)
+        public int HowManyTurnsToKillEnemy(IPlayer ennemy)
         {
-            throw new NotImplementedException();
+            int damagePerTurn = HowManyDamageToEnemy(ennemy);
+            return (ennemy.Health + damagePerTurn) / damagePerTurn;
         }
 
         public int HowManyTurnsToKillTree(Tile treeTile)

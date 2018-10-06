@@ -12,7 +12,9 @@ namespace LHGames.Interfaces
 
         int HowManyTurnsToKillTree(Tile treeTile);
 
-        int HowManyDamageToEnemy();
+        int HowManyDamageToEnemy(IPlayer ennemy);
+
+        int HowManyDamageFromEnemy(IPlayer ennemy);
 
         int HowManyTurnsToKillEnemy(IPlayer player);
     }
