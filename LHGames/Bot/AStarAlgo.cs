@@ -180,7 +180,7 @@ namespace LHGames.Bot
             Tile leftTile = null;
             if (current.Position.X == map.XMin)
             {
-                leftTile = GetTileByPosition(map.XMax, current.Position.Y);
+                leftTile = GetTileByPosition(map.XMax - 1, current.Position.Y);
             }
             else
             {

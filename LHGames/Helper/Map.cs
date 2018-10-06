@@ -126,8 +126,8 @@ namespace LHGames.Helper
                 throw new InvalidOperationException("Tiles cannot be null.");
             }
 
-            XMax = XMin + Tiles.GetLength(0);
-            YMax = YMin + Tiles.GetLength(1);
+            XMax = XMin + Tiles.GetLength(0) - 1;
+            YMax = YMin + Tiles.GetLength(1) - 1;
             VisibleDistance = (XMax - XMin - 1) / 2;
         }
     }
