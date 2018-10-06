@@ -213,19 +213,19 @@ namespace LHGames.Bot
                 downTile = GetTileByPosition(current.Position.X, current.Position.Y + 1);
             }
 
-            if (IsTileWalkable(rightTile.TileType))
+            if (rightTile != null && IsTileWalkable(rightTile.TileType))
             {
                 neighbors.Add(rightTile);
             }
-            if (IsTileWalkable(leftTile.TileType))
+            if (leftTile != null && IsTileWalkable(leftTile.TileType))
             {
                 neighbors.Add(leftTile);
             }
-            if (IsTileWalkable(upTile.TileType))
+            if (upTile != null && IsTileWalkable(upTile.TileType))
             {
                 neighbors.Add(upTile);
             }
-            if (IsTileWalkable(downTile.TileType))
+            if (downTile != null && IsTileWalkable(downTile.TileType))
             {
                 neighbors.Add(downTile);
             }
