@@ -57,8 +57,13 @@ namespace LHGames.Helper
 
     public class Tile
     {
-        public TileContent TileType { get; private set; }
-        public Point Position { get; private set; }
+        public TileContent TileType { get; set; }
+        public Point Position { get; set; }
+
+        public Tile()
+        {
+
+        }
 
         public Tile(byte content, int x, int y)
         {

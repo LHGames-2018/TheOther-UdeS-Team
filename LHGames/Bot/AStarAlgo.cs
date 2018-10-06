@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LHGames.Helper;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -6,38 +7,7 @@ using System.Threading.Tasks;
 namespace LHGames.Bot
 {
     public class AStarAlgo
-    {
-        public class Point
-        {
-            public int x;
-            public int y;
-
-            public override bool Equals(object obj)
-            {
-                if (obj == null || GetType() != obj.GetType())
-                {
-                    return false;
-                }
-
-                var other = (Point)obj;
-                return x == other.x && y == other.y;
-            }
-        }
-
-        public enum TileContent
-        {
-            Empty = 1,
-            House = 2,
-            Ressource = 4,
-            Tree = 8
-        }
-
-        public class Tile
-        {
-            public Point point;
-            public TileContent TileContent;
-        }
-
+    {   
         public class ATuple
         {
             public Tile tile;
@@ -75,7 +45,7 @@ namespace LHGames.Bot
             {
                 tile = start,
                 parent = null,
-                heuristique_remaining = heuristique(start.point, end.point),
+                heuristique_remaining = heuristique(start.Position, end.Position),
                 real_cost_to_get_here = 0
             });
             //List<ATuple> closed = new List<ATuple>();
@@ -92,7 +62,7 @@ namespace LHGames.Bot
                 var current_tuple = open[0];
                 open.Remove(current_tuple);
 
-                if (current_tuple.tile.point.Equals(end.point))
+                if (current_tuple.tile.Position.Equals(end.Position))
                 {
                     return ConstructPath(current_tuple);
                 }
@@ -104,10 +74,10 @@ namespace LHGames.Bot
                         tile = neighbor,
                         parent = current_tuple,
                         real_cost_to_get_here = current_tuple.real_cost_to_get_here + 1,
-                        heuristique_remaining = heuristique(neighbor.point, end.point)
+                        heuristique_remaining = heuristique(neighbor.Position, end.Position)
                     };
 
-                    var neighbor_value_in_open = open.Find(atuple => atuple.tile.point.Equals(neighbor.point));
+                    var neighbor_value_in_open = open.Find(atuple => atuple.tile.Position.Equals(neighbor.Position));
                     if (neighbor_value_in_open == null)
                     {
                         open.Add(next);
@@ -123,12 +93,12 @@ namespace LHGames.Bot
 
         public int GetCostToWalkUponTile(Tile tile)
         {
-            switch (tile.TileContent)
+            switch (tile.TileType)
             {
                 case TileContent.Empty:
                 case TileContent.House:
                     return 1;
-                case TileContent.Tree:
+                case TileContent.Wall:
                     return 1 + CalculateCostOfCuttingTree();
                 default:
                     // TODO account for lava
@@ -156,24 +126,24 @@ namespace LHGames.Bot
         {
             List<Tile> neighbors = new List<Tile>();
 
-            var rightTile = GetTileByPosition((current.point.x + 1 + MapSizeX) % MapSizeX, current.point.y);
-            var leftTile = GetTileByPosition((current.point.x - 1 + MapSizeX) % MapSizeX, current.point.y);
-            var upTile = GetTileByPosition(current.point.x, (current.point.y - 1 + MapSizeY) % MapSizeY);
-            var downTile = GetTileByPosition(current.point.x, (current.point.y + 1 + MapSizeY) % MapSizeY);
+            var rightTile = GetTileByPosition((current.Position.X + 1 + MapSizeX) % MapSizeX, current.Position.Y);
+            var leftTile = GetTileByPosition((current.Position.X - 1 + MapSizeX) % MapSizeX, current.Position.Y);
+            var upTile = GetTileByPosition(current.Position.X, (current.Position.Y - 1 + MapSizeY) % MapSizeY);
+            var downTile = GetTileByPosition(current.Position.X, (current.Position.Y + 1 + MapSizeY) % MapSizeY);
 
-            if (IsTileWalkable(rightTile.TileContent))
+            if (IsTileWalkable(rightTile.TileType))
             {
                 neighbors.Add(rightTile);
             }
-            if (IsTileWalkable(leftTile.TileContent))
+            if (IsTileWalkable(leftTile.TileType))
             {
                 neighbors.Add(leftTile);
             }
-            if (IsTileWalkable(upTile.TileContent))
+            if (IsTileWalkable(upTile.TileType))
             {
                 neighbors.Add(upTile);
             }
-            if (IsTileWalkable(downTile.TileContent))
+            if (IsTileWalkable(downTile.TileType))
             {
                 neighbors.Add(downTile);
             }

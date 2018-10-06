@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 
 namespace LHGames.Helper
@@ -89,7 +90,8 @@ namespace LHGames.Helper
                         {
                             tileType = byte.Parse(infos[0]);
                             var amountLeft = int.Parse(infos[1]);
-                            var density = double.Parse(infos[2]);
+                            CultureInfo culture = new CultureInfo("en");
+                            var density = double.Parse(infos[2], culture);
                             Tiles[i, j] = new ResourceTile(tileType, i + XMin, j + YMin, amountLeft, density);
                         }
                         else
