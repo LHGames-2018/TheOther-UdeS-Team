@@ -13,6 +13,8 @@ namespace LHGames.Helper
         public int XMax { get; set; }
         public int YMax { get; set; }
 
+        public Point HomePosition = new Point(0, 0);
+
         /// <summary>
         /// If you can break walls (trees)
         /// </summary>
