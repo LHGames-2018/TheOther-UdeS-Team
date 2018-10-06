@@ -86,16 +86,23 @@ namespace LHGames.Bot
                     // on doit aller à la base
                     var home_tile = worldMap.GetTile(PlayerInfo.HouseLocation.X, PlayerInfo.HouseLocation.Y);
                     var current_tile = worldMap.GetTile(PlayerInfo.Position.X, PlayerInfo.Position.Y);
-                    var best_path_to_home = astarService.Run(current_tile, home_tile);
-
-                    if (best_path_to_home == null)
+                    if (home_tile == null)
                     {
                         var path = manathan.GetManathanPath(current_tile.Position, PlayerInfo.HouseLocation);
                         return navigationHelper.NavigateToNextPosition(worldMap.GetTile(path[0].X, path[0].Y));
                     }
+                    else
+                    {
+                        var best_path_to_home = astarService.Run(current_tile, home_tile);
 
-                    // On est pas rendu
-                    return navigationHelper.NavigateToNextPosition(best_path_to_home[1]);
+                        if (best_path_to_home == null)
+                        {
+                            var path = manathan.GetManathanPath(current_tile.Position, PlayerInfo.HouseLocation);
+                            return navigationHelper.NavigateToNextPosition(worldMap.GetTile(path[0].X, path[0].Y));
+                        }
+                        // On est pas rendu
+                        return navigationHelper.NavigateToNextPosition(best_path_to_home[1]);
+                    }
                 }
             }
             catch (Exception e)
