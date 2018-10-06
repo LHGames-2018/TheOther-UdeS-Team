@@ -15,7 +15,6 @@ namespace LHGames.Bot
 
         internal Bot()
         {
-            this.astarService = new AStarAlgo();
         }
 
         /// <summary>
@@ -35,6 +34,7 @@ namespace LHGames.Bot
         /// <returns>The action you wish to execute.</returns>
         internal string ExecuteTurn(Map map, IEnumerable<IPlayer> visiblePlayers)
         {
+            this.astarService = new AStarAlgo(map);
             this.ressourcePlaner = new BadRessourcePlaner(map, PlayerInfo, astarService);
 
 
