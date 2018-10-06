@@ -51,6 +51,7 @@ namespace LHGames.Bot
             this.placePlaner = new PlacePlaner(map, PlayerInfo, astarService);
 
             var best_ressource = ressourcePlaner.GetBestRessourcePath();
+            //var best_place_for_shop = placePlaner.GetBestPlacePath(TileContent.Shop);
 
             if (PlayerInfo.CarriedResources < PlayerInfo.CarryingCapacity && best_ressource != null)
             {
