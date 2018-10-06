@@ -13,9 +13,12 @@ namespace LHGames.Bot
         IRessourcePlaner ressourcePlaner;
         IPlacePlaner placePlaner;
         IAStar astarService;
+        INavigationHelper navigationHelper;
+        WorldMap worldMap;
 
         internal Bot()
         {
+            worldMap = new WorldMap();
         }
 
         /// <summary>
@@ -35,8 +38,16 @@ namespace LHGames.Bot
         /// <returns>The action you wish to execute.</returns>
         internal string ExecuteTurn(Map map, IEnumerable<IPlayer> visiblePlayers)
         {
-            this.astarService = new AStarAlgo(map);
-            this.ressourcePlaner = new RessourcePlaner(map, PlayerInfo, astarService);
+            worldMap = WorldMap.ReadMap();
+            if (worldMap == null)
+            {
+                worldMap = new WorldMap();
+            }
+            worldMap.UpdateWorldMap(map);
+            WorldMap.WriteMap(worldMap);
+            this.astarService = new AStarAlgo(worldMap);
+            this.ressourcePlaner = new RessourcePlaner(worldMap, PlayerInfo, astarService);
+            this.navigationHelper = new NavigationHelper(PlayerInfo);
             this.placePlaner = new PlacePlaner(map, PlayerInfo, astarService);
 
             var best_ressource = ressourcePlaner.GetBestRessourcePath();
@@ -57,20 +68,18 @@ namespace LHGames.Bot
                 else
                 {
                     // On est pas rendu
-                    var direction = GetDirectionToTile(best_ressource.Path[1]);
-                    return AIHelper.CreateMoveAction(direction);
+                    return navigationHelper.NavigateToNextPosition(best_ressource.Path[1]);
                 }
             }
             else
             {
                 // on doit aller à la base
-                var home_tile = map.GetTile(PlayerInfo.HouseLocation.X, PlayerInfo.HouseLocation.Y);
-                var current_tile = map.GetTile(PlayerInfo.Position.X, PlayerInfo.Position.Y);
+                var home_tile = worldMap.GetTile(PlayerInfo.HouseLocation.X, PlayerInfo.HouseLocation.Y);
+                var current_tile = worldMap.GetTile(PlayerInfo.Position.X, PlayerInfo.Position.Y);
                 var best_path_to_home = astarService.Run(current_tile, home_tile);
-                
+
                 // On est pas rendu
-                var direction = GetDirectionToTile(best_path_to_home[1]);
-                return AIHelper.CreateMoveAction(direction);
+                return navigationHelper.NavigateToNextPosition(best_path_to_home[1]);
             }
 
             /*

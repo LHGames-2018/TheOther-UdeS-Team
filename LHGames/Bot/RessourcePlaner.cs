@@ -9,11 +9,11 @@ namespace LHGames.Bot
 {
     internal class RessourcePlaner : IRessourcePlaner
     {
-        private Map map;
+        private WorldMap map;
         private IPlayer player;
         private IAStar astarService;
 
-        internal RessourcePlaner(Map map, IPlayer player, IAStar astarService)
+        internal RessourcePlaner(WorldMap map, IPlayer player, IAStar astarService)
         {
             this.map = map;
             this.player = player;
