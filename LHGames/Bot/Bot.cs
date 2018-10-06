@@ -15,6 +15,7 @@ namespace LHGames.Bot
         IAStar astarService;
         INavigationHelper navigationHelper;
         WorldMap worldMap;
+        IManathan manathan;
 
         internal Bot()
         {
@@ -48,6 +49,7 @@ namespace LHGames.Bot
             this.astarService = new AStarAlgo(worldMap);
             this.ressourcePlaner = new RessourcePlaner(worldMap, PlayerInfo, astarService);
             this.navigationHelper = new NavigationHelper(PlayerInfo);
+            this.manathan = new Manathan();
             this.placePlaner = new PlacePlaner(map, PlayerInfo, astarService);
 
             var best_ressource = ressourcePlaner.GetBestRessourcePath();
@@ -78,6 +80,12 @@ namespace LHGames.Bot
                 var home_tile = worldMap.GetTile(PlayerInfo.HouseLocation.X, PlayerInfo.HouseLocation.Y);
                 var current_tile = worldMap.GetTile(PlayerInfo.Position.X, PlayerInfo.Position.Y);
                 var best_path_to_home = astarService.Run(current_tile, home_tile);
+
+                if (best_path_to_home == null)
+                {
+                    var path = manathan.GetManathanPath(current_tile.Position, PlayerInfo.HouseLocation);
+                    return navigationHelper.NavigateToNextPosition(worldMap.GetTile(path[0].X, path[0].Y));
+                }
 
                 // On est pas rendu
                 return navigationHelper.NavigateToNextPosition(best_path_to_home[1]);
