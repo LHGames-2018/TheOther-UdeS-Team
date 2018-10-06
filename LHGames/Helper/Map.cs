@@ -11,7 +11,7 @@ namespace LHGames.Helper
     /// </summary>
     internal class Map
     {
-        private Tile[,] Tiles { get; set; }
+        internal Tile[,] Tiles { get; set; }
         private int XMin { get; set; }
         private int YMin { get; set; }
         private int XMax { get; set; }
