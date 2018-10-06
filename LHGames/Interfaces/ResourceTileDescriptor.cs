@@ -6,10 +6,12 @@ using System.Threading.Tasks;
 
 namespace LHGames.Interfaces
 {
-    public class ResourceTileDescriptor
+    public class ResourceTileDescriptor : IComparable<ResourceTileDescriptor>
     {
         public Tile Tile;
         public List<Tile> Path;
+
+        
         public int CompareTo(ResourceTileDescriptor other) {
             ResourceTile resourceTile = (ResourceTile)Tile;
             ResourceTile otherResourceTile = (ResourceTile)other.Tile;

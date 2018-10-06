@@ -35,7 +35,7 @@ namespace LHGames.Bot
         internal string ExecuteTurn(Map map, IEnumerable<IPlayer> visiblePlayers)
         {
             this.astarService = new AStarAlgo(map);
-            this.ressourcePlaner = new BadRessourcePlaner(map, PlayerInfo, astarService);
+            this.ressourcePlaner = new RessourcePlaner(map, PlayerInfo, astarService);
 
 
             if (PlayerInfo.CarriedResources < PlayerInfo.CarryingCapacity)

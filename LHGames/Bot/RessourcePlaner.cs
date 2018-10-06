@@ -43,12 +43,12 @@ namespace LHGames.Bot
         public List<ResourceTileDescriptor> GetRessourcesPaths()
         {
             List <Tile> ressourceTiles = GetRessourcesTiles();
-            Tile currentTile = map.Tiles[player.Position.X, player.Position.Y];
+            Tile currentTile = map.GetTile(player.Position.X, player.Position.Y);
             List <ResourceTileDescriptor> resourceTileDescriptors = new List<ResourceTileDescriptor>();
             ressourceTiles.ToList().ForEach(ressourceTile => 
             {
                 List<Tile> calculatedPath = astarService.Run(currentTile, ressourceTile);
-                if (calculatedPath.Count != 0)
+                if (calculatedPath != null && calculatedPath.Count != 0)
                 {
                     ResourceTileDescriptor res = new ResourceTileDescriptor
                     {

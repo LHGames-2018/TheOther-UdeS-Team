@@ -108,7 +108,7 @@ namespace LHGames.Bot
                     return ConstructPath(current_tuple);
                 }
 
-                foreach (var neighbor in GetNeighbors(current_tuple.tile))
+                foreach (var neighbor in GetNeighbors(current_tuple.tile, end))
                 {
                     ATuple next = new ATuple()
                     {
@@ -166,7 +166,7 @@ namespace LHGames.Bot
             return map.GetTile(x, y);
         }
 
-        public List<Tile> GetNeighbors(Tile current)
+        public List<Tile> GetNeighbors(Tile current, Tile target)
         {
             List<Tile> neighbors = new List<Tile>();
 
@@ -213,19 +213,19 @@ namespace LHGames.Bot
                 downTile = GetTileByPosition(current.Position.X, current.Position.Y + 1);
             }
 
-            if (rightTile != null && IsTileWalkable(rightTile.TileType))
+            if (rightTile != null && (IsTileWalkable(rightTile.TileType) || rightTile.Position == target.Position))
             {
                 neighbors.Add(rightTile);
             }
-            if (leftTile != null && IsTileWalkable(leftTile.TileType))
+            if (leftTile != null && (IsTileWalkable(leftTile.TileType) || leftTile.Position == target.Position))
             {
                 neighbors.Add(leftTile);
             }
-            if (upTile != null && IsTileWalkable(upTile.TileType))
+            if (upTile != null && (IsTileWalkable(upTile.TileType) || upTile.Position == target.Position))
             {
                 neighbors.Add(upTile);
             }
-            if (downTile != null && IsTileWalkable(downTile.TileType))
+            if (downTile != null && (IsTileWalkable(downTile.TileType) || downTile.Position == target.Position))
             {
                 neighbors.Add(downTile);
             }
