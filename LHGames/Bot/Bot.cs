@@ -98,9 +98,10 @@ namespace LHGames.Bot
                     return navigationHelper.NavigateToNextPosition(best_path_to_home[1]);
                 }
             }
-            catch
+            catch (Exception e)
             {
                 Console.WriteLine("*** Reset the map! ***");
+                Console.WriteLine(e.Message);
 
                 worldMap = new WorldMap();
                 worldMap.UpdateWorldMap(map);
