@@ -10,6 +10,10 @@ namespace LHGames.Interfaces
     {
         public Tile Tile;
         public List<Tile> Path;
-        public int CompareTo(ResourceTileDescriptor other) { return Path.Count.CompareTo(other.Path.Count); }
+        public int CompareTo(ResourceTileDescriptor other) {
+            ResourceTile resourceTile = (ResourceTile)Tile;
+            ResourceTile otherResourceTile = (ResourceTile)other.Tile;
+            return (resourceTile.AmountLeft * Path.Count).CompareTo(otherResourceTile.AmountLeft * other.Path.Count);
+        }
     }
 }
