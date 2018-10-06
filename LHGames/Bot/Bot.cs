@@ -37,15 +37,20 @@ namespace LHGames.Bot
             this.astarService = new AStarAlgo(map);
             this.ressourcePlaner = new RessourcePlaner(map, PlayerInfo, astarService);
 
+            var best_ressource = ressourcePlaner.GetBestRessourcePath();
 
-            if (PlayerInfo.CarriedResources < PlayerInfo.CarryingCapacity)
+            if (PlayerInfo.CarriedResources < PlayerInfo.CarryingCapacity && best_ressource != null)
             {
-                var best_ressource = ressourcePlaner.GetBestRessourcePath();
                 if (best_ressource.Path.Count == 2)
                 {
                     // On est adjacent à la meilleure ressource
                     var direction = GetDirectionToTile(best_ressource.Tile);
                     return AIHelper.CreateCollectAction(direction);
+                }
+                else if (best_ressource.Path.Count == 0)
+                {
+                    // on est dessus
+                    return AIHelper.CreateMoveAction(new Point(-1, 0));
                 }
                 else
                 {
