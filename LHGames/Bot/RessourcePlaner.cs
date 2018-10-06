@@ -22,12 +22,40 @@ namespace LHGames.Bot
 
         public ResourceTileDescriptor GetBestRessourcePath()
         {
-            throw new NotImplementedException();
+            return GetRessourcesPaths().Min();
+        }
+
+        public List<Tile> GetRessourcesTiles() {
+            IEnumerable<Tile> mapTiles = map.GetVisibleTiles();
+            List<Tile> ressourcesTiles = new List<Tile>();
+
+            mapTiles.ToList().ForEach(i =>
+            {
+                if (i.TileType == TileContent.Resource)
+                {
+                    ressourcesTiles.Add(i);
+                }
+            });
+
+            return ressourcesTiles;
         }
 
         public List<ResourceTileDescriptor> GetRessourcesPaths()
         {
-            throw new NotImplementedException();
+            List <Tile> ressourceTiles = GetRessourcesTiles();
+            Tile currentTile = map.Tiles[player.Position.X, player.Position.Y];
+            List <ResourceTileDescriptor> resourceTileDescriptors = new List<ResourceTileDescriptor>();
+            ressourceTiles.ToList().ForEach(ressourceTile => 
+            {
+                ResourceTileDescriptor res = new ResourceTileDescriptor
+                {
+                    Tile = ressourceTile,
+                    Path = astarService.Run(currentTile, ressourceTile)
+                };
+                resourceTileDescriptors.Add(res);
+            });
+
+            return resourceTileDescriptors;
         }
     }
 }
