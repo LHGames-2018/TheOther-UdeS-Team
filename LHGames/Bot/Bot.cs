@@ -12,9 +12,11 @@ namespace LHGames.Bot
 
         IRessourcePlaner ressourcePlaner;
         IAStar astarService;
+        WorldMap worldMap;
 
         internal Bot()
         {
+            worldMap = new WorldMap();
         }
 
         /// <summary>
@@ -34,7 +36,8 @@ namespace LHGames.Bot
         /// <returns>The action you wish to execute.</returns>
         internal string ExecuteTurn(Map map, IEnumerable<IPlayer> visiblePlayers)
         {
-            this.astarService = new AStarAlgo(map);
+            worldMap.UpdateWorldMap(map);
+            this.astarService = new AStarAlgo(worldMap);
             this.ressourcePlaner = new RessourcePlaner(map, PlayerInfo, astarService);
 
 

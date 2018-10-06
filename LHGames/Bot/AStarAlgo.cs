@@ -9,7 +9,7 @@ namespace LHGames.Bot
 {
     public class AStarAlgo : IAStar
     {
-        internal AStarAlgo(Map map)
+        internal AStarAlgo(WorldMap map)
         {
             this.map = map;
         }
@@ -27,7 +27,7 @@ namespace LHGames.Bot
             }
         }
 
-        internal Map map;
+        internal WorldMap map;
         public int MapSizeX => map.XMax - map.XMin;
         public int MapSizeY => map.YMax - map.YMin;
 
