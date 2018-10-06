@@ -17,11 +17,11 @@ namespace LHGames.Bot
         public class ATuple
         {
             public Tile tile;
-            public int heuristique_remaining;
-            public int real_cost_to_get_here;
+            public  double heuristique_remaining;
+            public  double real_cost_to_get_here;
             public ATuple parent;
 
-            public int f()
+            public  double f()
             {
                 return real_cost_to_get_here + heuristique_remaining;
             }
@@ -82,6 +82,7 @@ namespace LHGames.Bot
         public List<Tile> Run(Tile start, Tile end)
         {
             List<ATuple> open = new List<ATuple>();
+            Dictionary<Point, double> costSoFar = new Dictionary<Point, double>();
             open.Add(new ATuple()
             {
                 tile = start,
@@ -96,7 +97,7 @@ namespace LHGames.Bot
                 if (open.Count == 0)
                 {
                     // TODO
-                    throw new Exception();
+                    return null;
                 }
 
                 var current_tuple = open[0];
@@ -117,13 +118,15 @@ namespace LHGames.Bot
                         heuristique_remaining = heuristique(neighbor.Position, end.Position)
                     };
 
-                    var neighbor_value_in_open = open.Find(atuple => atuple.tile.Position.Equals(neighbor.Position));
-                    if (neighbor_value_in_open == null)
+                    //if (neighbor_value_in_open == null)
+                    if (!costSoFar.ContainsKey(neighbor.Position))
                     {
                         open.Add(next);
+                        costSoFar[neighbor.Position] = next.f();
                     }
-                    else if (neighbor_value_in_open.f() > next.f())
+                    else if (costSoFar[neighbor.Position] > next.f())
                     {
+                        var neighbor_value_in_open = open.Find(atuple => atuple.tile.Position.Equals(neighbor.Position));
                         open.Remove(neighbor_value_in_open);
                         open.Add(next);
                     }
@@ -131,7 +134,7 @@ namespace LHGames.Bot
             }
         }
 
-        public int GetCostToWalkUponTile(Tile tile)
+        public double GetCostToWalkUponTile(Tile tile)
         {
             switch (tile.TileType)
             {
@@ -152,9 +155,10 @@ namespace LHGames.Bot
             return 2;
         }
 
-        public int heuristique(Point point1, Point point2)
+        public double heuristique(Point point1, Point point2)
         {
-            return 1;
+            //return 1;
+            return Point.Distance(point1, point2);
         }
 
         public Tile GetTileByPosition(int x, int y)
@@ -170,7 +174,7 @@ namespace LHGames.Bot
             Tile rightTile = null;
             if (current.Position.X == map.XMax)
             {
-                rightTile = GetTileByPosition(map.XMin, current.Position.Y);
+                //rightTile = GetTileByPosition(map.XMin, current.Position.Y);
             }
             else
             {
@@ -180,7 +184,7 @@ namespace LHGames.Bot
             Tile leftTile = null;
             if (current.Position.X == map.XMin)
             {
-                leftTile = GetTileByPosition(map.XMax - 1, current.Position.Y);
+                //leftTile = GetTileByPosition(map.XMax - 1, current.Position.Y);
             }
             else
             {
@@ -192,7 +196,7 @@ namespace LHGames.Bot
             Tile upTile = null;
             if (current.Position.Y == map.YMin)
             {
-                upTile = GetTileByPosition(current.Position.X, map.YMax);
+                //upTile = GetTileByPosition(current.Position.X, map.YMax);
             }
             else
             {
@@ -202,7 +206,7 @@ namespace LHGames.Bot
             Tile downTile = null;
             if (current.Position.Y == map.YMax)
             {
-                downTile = GetTileByPosition(current.Position.Y, map.YMin);
+                //downTile = GetTileByPosition(current.Position.Y, map.YMin);
             }
             else
             {
