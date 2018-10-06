@@ -36,7 +36,13 @@ namespace LHGames.Bot
         /// <returns>The action you wish to execute.</returns>
         internal string ExecuteTurn(Map map, IEnumerable<IPlayer> visiblePlayers)
         {
+            worldMap = WorldMap.ReadMap();
+            if (worldMap == null)
+            {
+                worldMap = new WorldMap();
+            }
             worldMap.UpdateWorldMap(map);
+            WorldMap.WriteMap(worldMap);
             this.astarService = new AStarAlgo(worldMap);
             this.ressourcePlaner = new RessourcePlaner(map, PlayerInfo, astarService);
 

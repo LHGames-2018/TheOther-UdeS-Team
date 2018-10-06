@@ -5,10 +5,6 @@ using System.Linq;
 
 namespace LHGames.Helper
 {
-    /// <summary>
-    /// This class represents the GameMap.
-    /// DO NOT MODIFY FUNCTIONS FROM THIS CLASS.
-    /// </summary>
     internal class WorldMap
     {
         internal Tile[,] Tiles { get; set; }
@@ -41,8 +37,8 @@ namespace LHGames.Helper
                 needToExpand = true;
                 newXMin = currentVision.XMin;
             }
-            int newXMax = XMax;
-            if (XMax < currentVision.XMax + 1)
+            int newXMax = XMax + 1;
+            if (newXMax < currentVision.XMax + 1)
             {
                 needToExpand = true;
                 newXMax = currentVision.XMax + 1;
@@ -53,8 +49,8 @@ namespace LHGames.Helper
                 newYMin = currentVision.YMin;
                 needToExpand = true;
             }
-            int newYMax = YMax;
-            if (YMax < currentVision.YMax + 1)
+            int newYMax = YMax + 1;
+            if (newYMax < currentVision.YMax + 1)
             {
                 needToExpand = true;
                 newYMax = currentVision.YMax + 1;
@@ -83,15 +79,25 @@ namespace LHGames.Helper
 
                 Tiles = newTiles;
                 XMin = newXMin;
-                XMax = newXMax;
+                XMax = newXMax - 1;
                 YMin = newYMin;
-                YMax = newYMax;
+                YMax = newYMax - 1;
             }
 
 
             WallsAreBreakable = currentVision.WallsAreBreakable;
 
             InitMapSize();
+        }
+
+        public static WorldMap ReadMap()
+        {
+            return StorageHelper.Read<WorldMap>("worldMap");
+        }
+
+        public static void WriteMap(WorldMap mapToWrite)
+        {
+            StorageHelper.Write("worldMap", mapToWrite);
         }
 
         /// <summary>
