@@ -102,6 +102,11 @@ namespace LHGames.Bot
             {
                 Console.WriteLine("*** Reset the map! ***");
                 Console.WriteLine(e.Message);
+                Console.WriteLine(e.StackTrace);
+                Console.WriteLine(e.InnerException);
+                Console.WriteLine("*** inner exception ***");
+                Console.WriteLine(e);
+                Console.WriteLine("*** exception ***");
 
                 worldMap = new WorldMap();
                 worldMap.UpdateWorldMap(map);
