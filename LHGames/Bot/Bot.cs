@@ -53,43 +53,57 @@ namespace LHGames.Bot
             this.manathan = new Manathan();
             this.placePlaner = new PlacePlaner(map, PlayerInfo, astarService);
 
-            var best_ressource = ressourcePlaner.GetBestRessourcePath();
-            //var best_place_for_shop = placePlaner.GetBestPlacePath(TileContent.Shop);
-
-            if (PlayerInfo.CarriedResources < PlayerInfo.CarryingCapacity && best_ressource != null)
+            try
             {
-                if (best_ressource.Path.Count == 2)
+                var best_ressource = ressourcePlaner.GetBestRessourcePath();
+                //var best_place_for_shop = placePlaner.GetBestPlacePath(TileContent.Shop);
+
+                if (PlayerInfo.CarriedResources < PlayerInfo.CarryingCapacity && best_ressource != null)
                 {
-                    // On est adjacent à la meilleure ressource
-                    var direction = GetDirectionToTile(best_ressource.Tile);
-                    return AIHelper.CreateCollectAction(direction);
-                }
-                else if (best_ressource.Path.Count == 1)
-                {
-                    // on est dessus
-                    return AIHelper.CreateMoveAction(new Point(-1, 0));
+                    if (best_ressource.Path.Count == 2)
+                    {
+                        // On est adjacent à la meilleure ressource
+                        var direction = GetDirectionToTile(best_ressource.Tile);
+                        return AIHelper.CreateCollectAction(direction);
+                    }
+                    else if (best_ressource.Path.Count == 1)
+                    {
+                        // on est dessus
+                        return AIHelper.CreateMoveAction(new Point(-1, 0));
+                    }
+                    else
+                    {
+                        // On est pas rendu
+                        return navigationHelper.NavigateToNextPosition(best_ressource.Path[1]);
+                    }
                 }
                 else
                 {
+                    // on doit aller à la base
+                    var home_tile = worldMap.GetTile(PlayerInfo.HouseLocation.X, PlayerInfo.HouseLocation.Y);
+                    var current_tile = worldMap.GetTile(PlayerInfo.Position.X, PlayerInfo.Position.Y);
+                    var best_path_to_home = astarService.Run(current_tile, home_tile);
+
+                    if (best_path_to_home == null)
+                    {
+                        var path = manathan.GetManathanPath(current_tile.Position, PlayerInfo.HouseLocation);
+                        return navigationHelper.NavigateToNextPosition(worldMap.GetTile(path[0].X, path[0].Y));
+                    }
+
                     // On est pas rendu
-                    return navigationHelper.NavigateToNextPosition(best_ressource.Path[1]);
+                    return navigationHelper.NavigateToNextPosition(best_path_to_home[1]);
                 }
             }
-            else
+            catch
             {
-                // on doit aller à la base
-                var home_tile = worldMap.GetTile(PlayerInfo.HouseLocation.X, PlayerInfo.HouseLocation.Y);
-                var current_tile = worldMap.GetTile(PlayerInfo.Position.X, PlayerInfo.Position.Y);
-                var best_path_to_home = astarService.Run(current_tile, home_tile);
+                Console.WriteLine("*** Reset the map! ***");
 
-                if (best_path_to_home == null)
-                {
-                    var path = manathan.GetManathanPath(current_tile.Position, PlayerInfo.HouseLocation);
-                    return navigationHelper.NavigateToNextPosition(worldMap.GetTile(path[0].X, path[0].Y));
-                }
+                worldMap = new WorldMap();
+                worldMap.UpdateWorldMap(map);
+                worldMap.HomePosition = PlayerInfo.HouseLocation;
+                WorldMap.WriteMap(worldMap);
 
-                // On est pas rendu
-                return navigationHelper.NavigateToNextPosition(best_path_to_home[1]);
+                return "";
             }
 
             /*
