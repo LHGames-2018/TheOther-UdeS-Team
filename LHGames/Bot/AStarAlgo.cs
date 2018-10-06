@@ -8,7 +8,12 @@ using System.Threading.Tasks;
 namespace LHGames.Bot
 {
     public class AStarAlgo : IAStar
-    {   
+    {
+        internal AStarAlgo(Map map)
+        {
+            this.map = map;
+        }
+
         public class ATuple
         {
             public Tile tile;
@@ -22,9 +27,9 @@ namespace LHGames.Bot
             }
         }
 
-        public Tile[,] allTiles;
-        public int MapSizeX = 10;
-        public int MapSizeY = 10;
+        internal Map map;
+        public int MapSizeX => map.XMax - map.XMin;
+        public int MapSizeY => map.YMax - map.YMin;
 
         public List<Tile> ConstructPath(ATuple final)
         {
@@ -36,7 +41,42 @@ namespace LHGames.Bot
                 current = current.parent;
             }
             tiles.Add(current.tile);
+            tiles.Reverse();
             return tiles;
+        }
+
+        public Point DirectionToward(Point start, Point end)
+        {
+            int difX = end.X - start.X;
+            if (difX > 1)
+            {
+                difX = end.X + MapSizeX - start.X;
+            }
+            else if (difX < -1)
+            {
+                difX = end.X - MapSizeX - start.X;
+            }
+
+            int difY = end.Y - start.Y;
+            if (difY > 1)
+            {
+                difY = end.Y + MapSizeY - start.Y;
+            }
+            else if (difY < -1)
+            {
+                difY = end.Y - MapSizeY - start.Y;
+            }
+            return new Point(difX, difY);
+        }
+
+        public List<Tile> Run(int startX, int startY, int endX, int endY)
+        {
+            return Run(map.GetTile(startX, startY), map.GetTile(endX, endY));
+        }
+
+        public List<Tile> Run(Point start, Point end)
+        {
+            return Run(start.X, start.Y, end.X, end.Y);
         }
 
         public List<Tile> Run(Tile start, Tile end)
@@ -49,7 +89,6 @@ namespace LHGames.Bot
                 heuristique_remaining = heuristique(start.Position, end.Position),
                 real_cost_to_get_here = 0
             });
-            //List<ATuple> closed = new List<ATuple>();
 
             while (true)
             {
@@ -120,7 +159,7 @@ namespace LHGames.Bot
 
         public Tile GetTileByPosition(int x, int y)
         {
-            return allTiles[x, y];
+            return map.GetTile(x, y);
         }
 
         public List<Tile> GetNeighbors(Tile current)
@@ -128,6 +167,7 @@ namespace LHGames.Bot
             List<Tile> neighbors = new List<Tile>();
 
             var rightTile = GetTileByPosition((current.Position.X + 1 + MapSizeX) % MapSizeX, current.Position.Y);
+            //if (current.Position.X != map.XMax)
             var leftTile = GetTileByPosition((current.Position.X - 1 + MapSizeX) % MapSizeX, current.Position.Y);
             var upTile = GetTileByPosition(current.Position.X, (current.Position.Y - 1 + MapSizeY) % MapSizeY);
             var downTile = GetTileByPosition(current.Position.X, (current.Position.Y + 1 + MapSizeY) % MapSizeY);

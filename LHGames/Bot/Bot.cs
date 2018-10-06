@@ -65,6 +65,16 @@ namespace LHGames.Bot
                 var direction = GetDirectionToTile(best_path_to_home[1]);
                 return AIHelper.CreateMoveAction(direction);
             }
+
+            /*
+             *             AStarAlgo astar = new AStarAlgo(map);
+            var result = astar.Run(PlayerInfo.Position, new Point(-4, 21));
+            
+
+            var data = StorageHelper.Read<TestClass>("Test");
+            Console.WriteLine(data?.Test);
+            //return AIHelper.CreateMoveAction(new Point(_currentDirection, 0)); astar.DirectionToward(PlayerInfo.Position, result[0].Position);
+            return AIHelper.CreateMoveAction(astar.DirectionToward(PlayerInfo.Position, result[0].Position));*/
         }
 
         /// <summary>
@@ -89,3 +99,4 @@ class TestClass
 {
     public string Test { get; set; }
 }
+ 
