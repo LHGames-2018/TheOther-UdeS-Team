@@ -36,10 +36,11 @@ namespace LHGames.Bot
 
         public string NavigateToNextPosition(Tile adjacentTile)
         {
-            if (adjacentTile.TileType == TileContent.Wall)
+            if (adjacentTile.TileType == TileContent.Wall || adjacentTile.TileType == TileContent.Player)
             {
                 return AIHelper.CreateMeleeAttackAction(GetDirectionToTile(adjacentTile));
-            } else
+            }
+            else
             {
                 return AIHelper.CreateMoveAction(GetDirectionToTile(adjacentTile));
             }
