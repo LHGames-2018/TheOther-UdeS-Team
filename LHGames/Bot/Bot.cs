@@ -40,11 +40,12 @@ namespace LHGames.Bot
         internal string ExecuteTurn(Map map, IEnumerable<IPlayer> visiblePlayers)
         {
             worldMap = WorldMap.ReadMap();
-            if (worldMap == null)
+            if (worldMap == null || worldMap.HomePosition != PlayerInfo.HouseLocation)
             {
                 worldMap = new WorldMap();
             }
             worldMap.UpdateWorldMap(map);
+            worldMap.HomePosition = PlayerInfo.HouseLocation;
             WorldMap.WriteMap(worldMap);
             this.astarService = new AStarAlgo(worldMap);
             this.ressourcePlaner = new RessourcePlaner(worldMap, PlayerInfo, astarService);
