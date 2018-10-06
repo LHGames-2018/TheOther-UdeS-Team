@@ -26,7 +26,7 @@ namespace LHGames.Bot
             var home_tile = map.GetTile(player.HouseLocation.X, player.HouseLocation.Y);
             var current_tile = map.GetTile(player.Position.X, player.Position.Y);
 
-            var ressourceTile = map.GetTile(home_tile.Position.X - 6, home_tile.Position.Y - 6);
+            var ressourceTile = map.GetTile(home_tile.Position.X + 4, home_tile.Position.Y - 2);
 
             var best_path_to_ressource = astarService.Run(current_tile, ressourceTile);
 
