@@ -7,11 +7,11 @@ namespace LHGames.Helper
 {
     internal class WorldMap
     {
-        internal Tile[,] Tiles { get; set; }
-        internal int XMin { get; set; }
-        internal int YMin { get; set; }
-        internal int XMax { get; set; }
-        internal int YMax { get; set; }
+        public Tile[,] Tiles { get; set; }
+        public int XMin { get; set; }
+        public int YMin { get; set; }
+        public int XMax { get; set; }
+        public int YMax { get; set; }
 
         /// <summary>
         /// If you can break walls (trees)
@@ -82,6 +82,19 @@ namespace LHGames.Helper
                 XMax = newXMax - 1;
                 YMin = newYMin;
                 YMax = newYMax - 1;
+            }
+            else
+            {
+                for (int i = newXMin; i < newXMax; ++i)
+                {
+                    for (int j = newYMin; j < newYMax; ++j)
+                    {
+                        if (currentVision.GetTile(i, j) != null)
+                        {
+                            Tiles[i - newXMin, j - newYMin] = currentVision.GetTile(i, j);
+                        }
+                    }
+                }
             }
 
 
