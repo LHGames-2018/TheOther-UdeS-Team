@@ -9,10 +9,11 @@ namespace LHGames.Bot
 {
     public class NavigationHelper : INavigationHelper
     {
-
-        public NavigationHelper(IPlayer player)
+        IAStar astar;
+        public NavigationHelper(IPlayer player, IAStar astar)
         {
             this.player = player;
+            this.astar = astar;
         }
 
         public IPlayer player;
@@ -46,11 +47,7 @@ namespace LHGames.Bot
 
         public Point GetDirectionToTile(Tile tile)
         {
-            var x_diff = tile.Position.X - player.Position.X;
-            var y_diff = tile.Position.Y - player.Position.Y;
-
-            // TODO maybe make sure this is 1 or -1 every time and no diagonal
-            return new Point(x_diff, y_diff);
+            return astar.DirectionToward(player.Position, tile.Position);
         }
     }
 }

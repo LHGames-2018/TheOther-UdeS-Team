@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace LHGames.Helper
 {
-    internal class WorldMap
+    public class WorldMap
     {
         public Tile[,] Tiles { get; set; }
         public int XMin { get; set; }
