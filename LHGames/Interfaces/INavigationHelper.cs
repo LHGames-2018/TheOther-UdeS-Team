@@ -8,8 +8,8 @@ namespace LHGames.Interfaces
 {
     interface INavigationHelper
     {
-        int HowManyTurnsToFollowPath(List<Tile> path);
-
         string NavigateToNextPosition(Tile adjacentTile);
+
+        int HowManyTurnsToFollowPath(List<Tile> path);
     }
 }
