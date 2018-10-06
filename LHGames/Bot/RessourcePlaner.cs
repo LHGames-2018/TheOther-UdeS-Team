@@ -47,12 +47,16 @@ namespace LHGames.Bot
             List <ResourceTileDescriptor> resourceTileDescriptors = new List<ResourceTileDescriptor>();
             ressourceTiles.ToList().ForEach(ressourceTile => 
             {
-                ResourceTileDescriptor res = new ResourceTileDescriptor
+                List<Tile> calculatedPath = astarService.Run(currentTile, ressourceTile);
+                if (calculatedPath.Count != 0)
                 {
-                    Tile = ressourceTile,
-                    Path = astarService.Run(currentTile, ressourceTile)
-                };
-                resourceTileDescriptors.Add(res);
+                    ResourceTileDescriptor res = new ResourceTileDescriptor
+                    {
+                        Tile = ressourceTile,
+                        Path = calculatedPath
+                    };
+                    resourceTileDescriptors.Add(res);
+                }
             });
 
             return resourceTileDescriptors;
