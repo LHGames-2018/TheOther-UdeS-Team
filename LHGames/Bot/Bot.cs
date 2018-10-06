@@ -11,6 +11,7 @@ namespace LHGames.Bot
         private int _currentDirection = 1;
 
         IRessourcePlaner ressourcePlaner;
+        IPlacePlaner placePlaner;
         IAStar astarService;
 
         internal Bot()
@@ -36,6 +37,7 @@ namespace LHGames.Bot
         {
             this.astarService = new AStarAlgo(map);
             this.ressourcePlaner = new RessourcePlaner(map, PlayerInfo, astarService);
+            this.placePlaner = new PlacePlaner(map, PlayerInfo, astarService);
 
             var best_ressource = ressourcePlaner.GetBestRessourcePath();
 

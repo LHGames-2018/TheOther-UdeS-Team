@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace LHGames.Bot
 {
-    internal class PlacePlaner
+    internal class PlacePlaner : IPlacePlaner
     {
         private Map map;
         private IPlayer player;

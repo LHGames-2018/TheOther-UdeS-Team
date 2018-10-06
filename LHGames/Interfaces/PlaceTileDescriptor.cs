@@ -13,8 +13,8 @@ namespace LHGames.Interfaces
 
         public int CompareTo(PlaceTileDescriptor other)
         {
-            ResourceTile resourceTile = (ResourceTile)Tile;
-            ResourceTile otherResourceTile = (ResourceTile)other.Tile;
+            Tile resourceTile = Tile;
+            Tile otherResourceTile = other.Tile;
             double resourceScore = Path.Count;
             double otherResourceScore = other.Path.Count;
 

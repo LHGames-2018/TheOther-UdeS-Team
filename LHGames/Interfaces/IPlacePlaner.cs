@@ -8,8 +8,8 @@ namespace LHGames.Interfaces
 {
     public interface IPlacePlaner
     {
-        List<ResourceTileDescriptor> GetPlacesPaths();
+        List<PlaceTileDescriptor> GetPlacesPaths(TileContent tileContent);
 
-        ResourceTileDescriptor GetBestPlacePath();
+        PlaceTileDescriptor GetBestPlacePath(TileContent tileContent);
     }
 }
