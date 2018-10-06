@@ -12,6 +12,7 @@ namespace LHGames.Bot
 
         IRessourcePlaner ressourcePlaner;
         IAStar astarService;
+        INavigationHelper navigationHelper;
 
         internal Bot()
         {
@@ -36,6 +37,7 @@ namespace LHGames.Bot
         {
             this.astarService = new AStarAlgo(map);
             this.ressourcePlaner = new RessourcePlaner(map, PlayerInfo, astarService);
+            this.navigationHelper = new NavigationHelper(PlayerInfo);
 
 
             if (PlayerInfo.CarriedResources < PlayerInfo.CarryingCapacity)
@@ -50,8 +52,7 @@ namespace LHGames.Bot
                 else
                 {
                     // On est pas rendu
-                    var direction = GetDirectionToTile(best_ressource.Path[1]);
-                    return AIHelper.CreateMoveAction(direction);
+                    return navigationHelper.NavigateToNextPosition(best_ressource.Path[1]);
                 }
             }
             else
@@ -60,10 +61,9 @@ namespace LHGames.Bot
                 var home_tile = map.GetTile(PlayerInfo.HouseLocation.X, PlayerInfo.HouseLocation.Y);
                 var current_tile = map.GetTile(PlayerInfo.Position.X, PlayerInfo.Position.Y);
                 var best_path_to_home = astarService.Run(current_tile, home_tile);
-                
+
                 // On est pas rendu
-                var direction = GetDirectionToTile(best_path_to_home[1]);
-                return AIHelper.CreateMoveAction(direction);
+                return navigationHelper.NavigateToNextPosition(best_path_to_home[1]);
             }
 
             /*
