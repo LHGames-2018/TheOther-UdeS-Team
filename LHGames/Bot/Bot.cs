@@ -47,7 +47,7 @@ namespace LHGames.Bot
                     var direction = GetDirectionToTile(best_ressource.Tile);
                     return AIHelper.CreateCollectAction(direction);
                 }
-                else if (best_ressource.Path.Count == 0)
+                else if (best_ressource.Path.Count == 1)
                 {
                     // on est dessus
                     return AIHelper.CreateMoveAction(new Point(-1, 0));
