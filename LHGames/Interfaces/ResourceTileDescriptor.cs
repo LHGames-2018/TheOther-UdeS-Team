@@ -15,8 +15,8 @@ namespace LHGames.Interfaces
         public int CompareTo(ResourceTileDescriptor other) {
             ResourceTile resourceTile = (ResourceTile)Tile;
             ResourceTile otherResourceTile = (ResourceTile)other.Tile;
-            double resourceScore = 1/resourceTile.AmountLeft * 1/resourceTile.Density * Path.Count;
-            double otherResourceScore = 1/otherResourceTile.AmountLeft * 1/otherResourceTile.Density * other.Path.Count;
+            double resourceScore = 1/resourceTile.AmountLeft + 1/resourceTile.Density + Path.Count;
+            double otherResourceScore = 1/otherResourceTile.AmountLeft + 1/otherResourceTile.Density + other.Path.Count;
 
             return resourceScore.CompareTo(otherResourceScore);
         }
