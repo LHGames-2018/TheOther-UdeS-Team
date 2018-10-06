@@ -78,8 +78,8 @@ namespace LHGames.Helper
 
     public class ResourceTile : Tile
     {
-        public int AmountLeft { get; private set; }
-        public double Density { get; private set; }
+        public int AmountLeft { get; set; }
+        public double Density { get; set; }
 
         public ResourceTile(byte content, int x, int y, int amountLeft, double density)
             : base(content, x, y)
