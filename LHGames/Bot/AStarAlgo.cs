@@ -180,11 +180,11 @@ namespace LHGames.Bot
             Tile leftTile = null;
             if (current.Position.X == map.XMin)
             {
-                rightTile = GetTileByPosition(map.XMax, current.Position.Y);
+                leftTile = GetTileByPosition(map.XMax, current.Position.Y);
             }
             else
             {
-                rightTile = GetTileByPosition(current.Position.X - 1, current.Position.Y);
+                leftTile = GetTileByPosition(current.Position.X - 1, current.Position.Y);
             }
 
             //var upTile = GetTileByPosition(current.Position.X, (current.Position.Y - 1 + MapSizeY) % MapSizeY);
@@ -192,21 +192,21 @@ namespace LHGames.Bot
             Tile upTile = null;
             if (current.Position.Y == map.YMin)
             {
-                rightTile = GetTileByPosition(current.Position.X, map.YMax);
+                upTile = GetTileByPosition(current.Position.X, map.YMax);
             }
             else
             {
-                rightTile = GetTileByPosition(current.Position.X, current.Position.Y - 1);
+                upTile = GetTileByPosition(current.Position.X, current.Position.Y - 1);
             }
             //var downTile = GetTileByPosition(current.Position.X, (current.Position.Y + 1 + MapSizeY) % MapSizeY);
             Tile downTile = null;
             if (current.Position.Y == map.YMax)
             {
-                rightTile = GetTileByPosition(current.Position.Y, map.YMin);
+                downTile = GetTileByPosition(current.Position.Y, map.YMin);
             }
             else
             {
-                rightTile = GetTileByPosition(current.Position.X, current.Position.Y + 1);
+                downTile = GetTileByPosition(current.Position.X, current.Position.Y + 1);
             }
 
             if (IsTileWalkable(rightTile.TileType))
