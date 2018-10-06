@@ -33,10 +33,14 @@ namespace LHGames.Bot
             {
                 _currentDirection *= -1;
             }
+            AStarAlgo astar = new AStarAlgo(map);
+            var result = astar.Run(PlayerInfo.Position, new Point(-4, 21));
+            
 
             var data = StorageHelper.Read<TestClass>("Test");
             Console.WriteLine(data?.Test);
-            return AIHelper.CreateMoveAction(new Point(_currentDirection, 0));
+            //return AIHelper.CreateMoveAction(new Point(_currentDirection, 0)); astar.DirectionToward(PlayerInfo.Position, result[0].Position);
+            return AIHelper.CreateMoveAction(astar.DirectionToward(PlayerInfo.Position, result[0].Position));
         }
 
         /// <summary>
