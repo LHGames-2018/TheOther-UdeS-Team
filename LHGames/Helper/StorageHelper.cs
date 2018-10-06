@@ -15,7 +15,8 @@ namespace LHGames.Helper
 
             try
             {
-                _document[key] = JsonConvert.SerializeObject(data);
+                JsonSerializerSettings settings = new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.All };
+                _document[key] = JsonConvert.SerializeObject(data, settings);
                 Store();
             }
             catch (Exception e)
@@ -32,7 +33,8 @@ namespace LHGames.Helper
             {
                 if (_document.TryGetValue(key, out var data))
                 {
-                    return JsonConvert.DeserializeObject<T>(data);
+                    JsonSerializerSettings settings = new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.All };
+                    return JsonConvert.DeserializeObject<T>(data, settings);
                 }
 
                 return default(T);
@@ -60,7 +62,8 @@ namespace LHGames.Helper
                 if (System.IO.File.Exists(_path))
                 {
                     var data = System.IO.File.ReadAllText(_path);
-                    _document = JsonConvert.DeserializeObject<Dictionary<string, string>>(data);
+                    JsonSerializerSettings settings = new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.All };
+                    _document = JsonConvert.DeserializeObject<Dictionary<string, string>>(data, settings);
                 }
                 else
                 {
@@ -77,7 +80,9 @@ namespace LHGames.Helper
         {
             try
             {
-                System.IO.File.WriteAllText(_path, JsonConvert.SerializeObject(_document));
+                JsonSerializerSettings settings = new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.All };
+
+                System.IO.File.WriteAllText(_path, JsonConvert.SerializeObject(_document, settings));
             }
             catch (Exception e)
             {
