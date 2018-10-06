@@ -114,7 +114,7 @@ namespace LHGames.Bot
                     {
                         tile = neighbor,
                         parent = current_tuple,
-                        real_cost_to_get_here = current_tuple.real_cost_to_get_here + 1,
+                        real_cost_to_get_here = current_tuple.real_cost_to_get_here + GetCostToWalkUponTile(neighbor),
                         heuristique_remaining = heuristique(neighbor.Position, end.Position)
                     };
 
@@ -236,7 +236,7 @@ namespace LHGames.Bot
         public bool IsTileWalkable(TileContent tileContent)
         {
             // TODO handle lava
-            return tileContent == TileContent.Empty || tileContent == TileContent.House;
+            return tileContent == TileContent.Empty || tileContent == TileContent.House || (map.WallsAreBreakable && tileContent == TileContent.Wall);
         }
     }
 }
