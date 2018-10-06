@@ -12,10 +12,10 @@ namespace LHGames.Helper
     internal class Map
     {
         internal Tile[,] Tiles { get; set; }
-        private int XMin { get; set; }
-        private int YMin { get; set; }
-        private int XMax { get; set; }
-        private int YMax { get; set; }
+        internal int XMin { get; set; }
+        internal int YMin { get; set; }
+        internal int XMax { get; set; }
+        internal int YMax { get; set; }
 
         /// <summary>
         /// How far your Bot can see.
@@ -54,6 +54,15 @@ namespace LHGames.Helper
                 return TileContent.Empty;
             }
             return Tiles[x - XMin, y - YMin].TileType;
+        }
+
+        internal Tile GetTile(int x, int y)
+        {
+            if (x < XMin || x > XMax || y < YMin || y > YMax)
+            {
+                return null;
+            }
+            return Tiles[x - XMin, y - YMin];
         }
 
         /// <summary>
