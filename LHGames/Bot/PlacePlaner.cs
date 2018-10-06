@@ -1,4 +1,4 @@
-﻿using LHGames.Helper;
+using LHGames.Helper;
 using LHGames.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -7,31 +7,32 @@ using System.Threading.Tasks;
 
 namespace LHGames.Bot
 {
-    internal class RessourcePlaner : IRessourcePlaner
+    internal class PlacePlaner
     {
-        private WorldMap map;
+        private Map map;
         private IPlayer player;
         private IAStar astarService;
 
-        internal RessourcePlaner(WorldMap map, IPlayer player, IAStar astarService)
+        internal PlacePlaner(Map map, IPlayer player, IAStar astarService)
         {
             this.map = map;
             this.player = player;
             this.astarService = astarService;
         }
 
-        public ResourceTileDescriptor GetBestRessourcePath()
+        public PlaceTileDescriptor GetBestPlacePath(TileContent tileContent)
         {
-            return GetRessourcesPaths().Min();
+            return GetPlacesPaths(tileContent).Min();
         }
 
-        public List<Tile> GetRessourcesTiles() {
+        public List<Tile> GetPlacesTiles(TileContent tileContent)
+        {
             IEnumerable<Tile> mapTiles = map.GetVisibleTiles();
             List<Tile> ressourcesTiles = new List<Tile>();
 
             mapTiles.ToList().ForEach(i =>
             {
-                if (i.TileType == TileContent.Resource)
+                if (i.TileType == tileContent)
                 {
                     ressourcesTiles.Add(i);
                 }
@@ -40,26 +41,26 @@ namespace LHGames.Bot
             return ressourcesTiles;
         }
 
-        public List<ResourceTileDescriptor> GetRessourcesPaths()
+        public List<PlaceTileDescriptor> GetPlacesPaths(TileContent tileContent)
         {
-            List <Tile> ressourceTiles = GetRessourcesTiles();
+            List<Tile> ressourceTiles = GetPlacesTiles(tileContent);
             Tile currentTile = map.GetTile(player.Position.X, player.Position.Y);
-            List <ResourceTileDescriptor> resourceTileDescriptors = new List<ResourceTileDescriptor>();
-            ressourceTiles.ToList().ForEach(ressourceTile => 
+            List<PlaceTileDescriptor> placeTileDescriptors = new List<PlaceTileDescriptor>();
+            ressourceTiles.ToList().ForEach(ressourceTile =>
             {
                 List<Tile> calculatedPath = astarService.Run(currentTile, ressourceTile);
                 if (calculatedPath != null && calculatedPath.Count != 0)
                 {
-                    ResourceTileDescriptor res = new ResourceTileDescriptor
+                    PlaceTileDescriptor res = new PlaceTileDescriptor
                     {
                         Tile = ressourceTile,
                         Path = calculatedPath
                     };
-                    resourceTileDescriptors.Add(res);
+                    placeTileDescriptors.Add(res);
                 }
             });
 
-            return resourceTileDescriptors;
+            return placeTileDescriptors;
         }
     }
 }
