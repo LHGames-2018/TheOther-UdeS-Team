@@ -53,6 +53,8 @@ namespace LHGames.Bot
             this.manathan = new Manathan();
             this.placePlaner = new PlacePlaner(map, PlayerInfo, astarService);
 
+            Console.WriteLine("Cash : " + PlayerInfo.TotalResources);
+
             try
             {
                 var best_ressource = ressourcePlaner.GetBestRessourcePath();
