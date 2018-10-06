@@ -55,7 +55,7 @@ namespace LHGames.Bot
                         Tile = ressourceTile,
                         Path = calculatedPath
                     };
-                    resourceTileDescriptors.Add(res);
+                     resourceTileDescriptors.Add(res);
                 }
             });
 
