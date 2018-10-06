@@ -1,4 +1,5 @@
 ﻿using LHGames.Helper;
+using LHGames.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace LHGames.Bot
 {
-    public class AStarAlgo
+    public class AStarAlgo : IAStar
     {   
         public class ATuple
         {
